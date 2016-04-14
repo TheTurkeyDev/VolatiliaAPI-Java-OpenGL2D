@@ -9,12 +9,12 @@ public class Entity
 	private TexturedModel model;
 	private Vector2f position;
 	private float rotation;
-	private float scale;
+	private Vector2f scale;
 	private float velX, velY;
 
 	private int textureIndex = 0;
 
-	public Entity(TexturedModel model, Vector2f position, float rotation, float scale)
+	public Entity(TexturedModel model, Vector2f position, float rotation, Vector2f scale)
 	{
 		this.model = model;
 		this.position = position;
@@ -22,7 +22,7 @@ public class Entity
 		this.scale = scale;
 	}
 
-	public Entity(TexturedModel model, Vector2f position, float rotation, float scale, int textureIndex)
+	public Entity(TexturedModel model, Vector2f position, float rotation, Vector2f scale, int textureIndex)
 	{
 		this.model = model;
 		this.position = position;
@@ -84,12 +84,12 @@ public class Entity
 		this.rotation = rotation;
 	}
 
-	public float getScale()
+	public Vector2f getScale()
 	{
 		return scale;
 	}
 
-	public void setScale(float scale)
+	public void setScale(Vector2f scale)
 	{
 		this.scale = scale;
 	}

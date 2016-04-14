@@ -37,8 +37,7 @@ public class Screen
 	 */
 	public void render()
 	{
-		for(GuiComponent comp: components)
-			comp.render();
+		guiRenderer.render(components);
 		renderer.render(texts);
 	}
 

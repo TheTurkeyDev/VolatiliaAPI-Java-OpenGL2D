@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,47 +23,13 @@ import main.java.VolatiliaOGL.models.RawModel;
 
 public class Loader
 {
-	float[] vertices = {
-	        -0.5f, 0.5f, 0f,    // Left top         ID: 0
-	        -0.5f, -0.5f, 0f,   // Left bottom      ID: 1
-	        0.5f, -0.5f, 0f,    // Right bottom     ID: 2
-	        0.5f, 0.5f, 0f  // Right left       ID: 3
-	};
-	
-	byte[] indices = {
-	        // Left bottom triangle
-	        0, 1, 2,
-	        // Right top triangle
-	        2, 3, 0
-	};
-	
 	public static Loader INSTANCE = new Loader();
 	private List<Integer> vaos = new ArrayList<Integer>();
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private List<Integer> textures = new ArrayList<Integer>();
 
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices)
-	{
-		int vaoID = this.createVAO();
-		this.bindIndicesBuffer(indices);
-		this.storeDataInAttributesList(0, 3, positions);
-		this.storeDataInAttributesList(1, 2, textureCoords);
-		this.storeDataInAttributesList(2, 3, normals);
-		this.unbindVAO();
-		return new RawModel(vaoID, indices.length);
-	}
-
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents, int[] indices)
-	{
-		int vaoID = this.createVAO();
-		this.bindIndicesBuffer(indices);
-		this.storeDataInAttributesList(0, 3, positions);
-		this.storeDataInAttributesList(1, 2, textureCoords);
-		this.storeDataInAttributesList(2, 3, normals);
-		this.storeDataInAttributesList(3, 3, tangents);
-		this.unbindVAO();
-		return new RawModel(vaoID, indices.length);
-	}
+	private static float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
+	public static final RawModel quad = Loader.INSTANCE.loadToVAO(positions, 2);
 
 	public int loadToVAO(float[] positions, float[] textureCoords)
 	{
@@ -180,15 +145,6 @@ public class Loader
 		GL30.glBindVertexArray(0);
 	}
 
-	private void bindIndicesBuffer(int[] indicies)
-	{
-		int id = GL15.glGenBuffers();
-		vbos.add(id);
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, id);
-		IntBuffer buffer = storeDataInIntBuffer(indicies);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-	}
-
 	private FloatBuffer storeDataInFloatBuffer(float[] data)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
@@ -197,11 +153,35 @@ public class Loader
 		return buffer;
 	}
 
-	private IntBuffer storeDataInIntBuffer(int[] data)
+	public void addVertices(List<Float> vertices, double x, double y, double maxX, double maxY)
 	{
-		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
-		buffer.put(data);
-		buffer.flip();
-		return buffer;
+		vertices.add((float) x);
+		vertices.add((float) y);
+		vertices.add((float) x);
+		vertices.add((float) maxY);
+		vertices.add((float) maxX);
+		vertices.add((float) maxY);
+		vertices.add((float) maxX);
+		vertices.add((float) maxY);
+		vertices.add((float) maxX);
+		vertices.add((float) y);
+		vertices.add((float) x);
+		vertices.add((float) y);
+	}
+
+	public void addTexCoords(List<Float> texCoords, double x, double y, double maxX, double maxY)
+	{
+		texCoords.add((float) x);
+		texCoords.add((float) y);
+		texCoords.add((float) x);
+		texCoords.add((float) maxY);
+		texCoords.add((float) maxX);
+		texCoords.add((float) maxY);
+		texCoords.add((float) maxX);
+		texCoords.add((float) maxY);
+		texCoords.add((float) maxX);
+		texCoords.add((float) y);
+		texCoords.add((float) x);
+		texCoords.add((float) y);
 	}
 }

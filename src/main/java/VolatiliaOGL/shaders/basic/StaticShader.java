@@ -5,7 +5,6 @@ import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Light;
 import main.java.VolatiliaOGL.shaders.BaseShader;
@@ -18,19 +17,11 @@ public class StaticShader extends BaseShader
 	private static final String FRAGMENT_FILE = "/main/java/VolatiliaOGL/shaders/basic/fragmentShader.txt";
 
 	private int locationTransformationMatrix;
-	private int locationProjectionMatrix;
 	private int[] locationLightPosition;
 	private int[] locationLightColor;
 	private int[] locationLightAttenuation;
-	private int locationShineDampen;
-	private int locationReflectivity;
-	private int locationUseFakeLighting;
-	private int locationSkyColor;
 	private int locationTextureAtlasRows;
 	private int locationTextureOffset;
-	private int locationClipPlane;
-	private int locationDensity;
-	private int locationGradient;
 
 	public StaticShader()
 	{
@@ -42,23 +33,15 @@ public class StaticShader extends BaseShader
 	{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
-		super.bindAttribute(2, "normal ");
 	}
 
 	@Override
 	protected void getAllUniformLocations()
 	{
 		this.locationTransformationMatrix = super.getUniformLocation("transformationMatrix");
-		this.locationShineDampen = super.getUniformLocation("shineDamper");
-		this.locationReflectivity = super.getUniformLocation("reflectivity");
-		this.locationUseFakeLighting = super.getUniformLocation("useFakeLighting");
-		this.locationSkyColor = super.getUniformLocation("skyColor");
 		this.locationTextureAtlasRows = super.getUniformLocation("numberOfRows");
 		this.locationTextureOffset = super.getUniformLocation("offset");
-		this.locationClipPlane = super.getUniformLocation("plane");
-		this.locationDensity = super.getUniformLocation("density");
-		this.locationGradient = super.getUniformLocation("gradient");
-
+		
 		locationLightPosition = new int[MAX_LIGHTS];
 		locationLightColor = new int[MAX_LIGHTS];
 		locationLightAttenuation = new int[MAX_LIGHTS];
@@ -75,14 +58,10 @@ public class StaticShader extends BaseShader
 		super.loadMatrix(this.locationTransformationMatrix, matrix);
 	}
 
-	public void loadProjectionMatrix(Matrix4f matrix)
-	{
-		super.loadMatrix(this.locationProjectionMatrix, matrix);
-	}
-
 	public void loadLights(List<Light> lights)
 	{
-		for(int i = 0; i < MAX_LIGHTS; i++)
+		int end = lights.size() > MAX_LIGHTS ? MAX_LIGHTS : lights.size();
+		for(int i = 0; i < end; i++)
 		{
 			if(i < lights.size())
 			{
@@ -98,23 +77,7 @@ public class StaticShader extends BaseShader
 			}
 		}
 	}
-
-	public void loadShineVariables(float dampen, float reflectivity)
-	{
-		super.loadFloat(this.locationShineDampen, dampen);
-		super.loadFloat(this.locationReflectivity, reflectivity);
-	}
-
-	public void loadUsesFakeLighting(boolean usesFakeLight)
-	{
-		super.loadBoolean(this.locationUseFakeLighting, usesFakeLight);
-	}
-
-	public void loadSkyColor(float r, float g, float b)
-	{
-		super.loadVector(this.locationSkyColor, new Vector3f(r, g, b));
-	}
-
+	
 	public void loadNumberOfTextureAtlasRows(int num)
 	{
 		super.loadFloat(this.locationTextureAtlasRows, num);
@@ -123,16 +86,5 @@ public class StaticShader extends BaseShader
 	public void loadTextureOffset(float x, float y)
 	{
 		super.loadVector(this.locationTextureOffset, new Vector2f(x, y));
-	}
-
-	public void loadClipedPlane(Vector4f plane)
-	{
-		super.loadVector(this.locationClipPlane, plane);
-	}
-
-	public void loadFogData(float density, float gradient)
-	{
-		super.loadFloat(this.locationDensity, density);
-		super.loadFloat(this.locationGradient, gradient);
 	}
 }

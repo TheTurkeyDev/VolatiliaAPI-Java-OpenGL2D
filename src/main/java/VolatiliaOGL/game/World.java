@@ -18,7 +18,6 @@ public class World
 
 	private int worldID;
 
-	private Light sun = null;
 	private List<Light> lights = new ArrayList<Light>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	private List<Entity> entities = new ArrayList<Entity>();
@@ -35,7 +34,7 @@ public class World
 	
 	public void renderWorld(Camera camera)
 	{
-		MasterRenderer.INSTANCE.renderScene(entities, terrains, this.getNearestNLights(camera.getPosition(), 4, true), camera, new Vector4f(0, -1, 0, 100000));
+		MasterRenderer.INSTANCE.renderScene(entities, terrains, this.getNearestNLights(camera.getPosition(), 4), camera, new Vector4f(0, -1, 0, 100000));
 	}
 	
 	public void addEntityToWorld(Entity ent)
@@ -58,12 +57,12 @@ public class World
 		lights.remove(light);
 	}
 
-	public List<Light> getNearestNLights(Vector2f position, int numberOfLights, boolean sun)
+	public List<Light> getNearestNLights(Vector2f position, int numberOfLights)
 	{
-		return this.getNearestNLights(position.x, position.y, numberOfLights, sun);
+		return this.getNearestNLights(position.x, position.y, numberOfLights);
 	}
 	
-	public List<Light> getNearestNLights(float x, float y, int numberOfLights, boolean sun)
+	public List<Light> getNearestNLights(float x, float y, int numberOfLights)
 	{
 		Vector2f source = new Vector2f(x, y);
 		List<Light> lightsToReturn = new ArrayList<Light>();
@@ -93,28 +92,12 @@ public class World
 			}
 		}
 
-		if(sun)
-		{
-			lightsToReturn.remove(furthest);
-			lightsToReturn.add(this.sun);
-		}
-
 		return lightsToReturn;
 	}
 
 	private float distanceBetween(Vector2f p1, Vector2f p2)
 	{
 		return (float) Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-	}
-
-	public Light getSun()
-	{
-		return this.sun;
-	}
-
-	public void setSun(Light sun)
-	{
-		this.sun = sun;
 	}
 
 	public boolean addTerrain(Terrain t)

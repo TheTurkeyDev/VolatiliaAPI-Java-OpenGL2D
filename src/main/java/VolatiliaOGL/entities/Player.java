@@ -20,7 +20,7 @@ public class Player extends Entity
 
 	private boolean isInAir = false;
 
-	public Player(TexturedModel model, Vector2f positon, float rot, float scale)
+	public Player(TexturedModel model, Vector2f positon, float rot, Vector2f scale)
 	{
 		super(model, positon, rot, scale);
 	}

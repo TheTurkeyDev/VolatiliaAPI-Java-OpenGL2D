@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Camera;
@@ -24,8 +23,6 @@ public class MasterRenderer
 	public static final float SKYRED = 0.5444f;
 	public static final float SKYGREEN = 0.62f;
 	public static final float SKYBLUE = 0.69f;
-
-	private Matrix4f projectionMatrix;
 
 	private StaticShader shader = new StaticShader();
 	private TerrainShader terrainShader = new TerrainShader();
@@ -48,8 +45,6 @@ public class MasterRenderer
 		prepare();
 
 		shader.start();
-		shader.loadClipedPlane(clipPlane);
-		shader.loadSkyColor(SKYRED, SKYGREEN, SKYBLUE);
 		shader.loadLights(lights);
 		renderer.render(entities);
 		shader.stop();
@@ -117,10 +112,5 @@ public class MasterRenderer
 	{
 		this.shader.cleanUp();
 		this.terrainShader.cleanUp();
-	}
-	
-	public Matrix4f getProjectionMatrix()
-	{
-		return this.projectionMatrix;
 	}
 }
