@@ -28,7 +28,7 @@ public class ShapeShader extends BaseShader
 	protected void getAllUniformLocations()
 	{
 		this.locationTransformationMatrix = super.getUniformLocation("transformationMatrix");
-		this.locationColor = super.getUniformLocation("shapeColor");
+		this.locationColor = super.getUniformLocation("color");
 	}
 
 	public void loadTransformationMatrix(Matrix4f matrix)

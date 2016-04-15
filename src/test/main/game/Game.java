@@ -38,8 +38,8 @@ public class Game
 		this.screen = screen;
 		this.screen.addText(text);
 		ModelTexture texture = new ModelTexture(Loader.INSTANCE.loadTexture("textures/gui/health"));
-		this.screen.addGuiComponent(new GuiComponent("test", texture.getID(), new Vector2f(0.5f,0.5f), new Vector2f(.1f,.1f)));
-		this.screen.addShape(new ShapeRectangle(new Vector4f(0.5f, 0.5f, 0.5f, 0.5f), new Vector2f(0.5f,0.5f), new Vector2f(.23f,.23f)));
+		this.screen.addGuiComponent(new GuiComponent("test", texture.getID(), new Vector2f(0.5f, 0.5f), new Vector2f(.1f, .1f)));
+		this.screen.addShape(new ShapeRectangle(new Vector4f(0.25f, 0.6f, 0.4f, 0f), new Vector2f(0.5f, 0.5f), new Vector2f(0.1f, 0.1f)));
 
 		TexturedModel test = new TexturedModel(Loader.quad, texture);
 		player = new Player(test, new Vector2f(.2f, .2f), 0, new Vector2f(.1f, .1f));
