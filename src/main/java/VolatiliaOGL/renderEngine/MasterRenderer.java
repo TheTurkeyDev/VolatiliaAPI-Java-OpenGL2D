@@ -1,18 +1,14 @@
 package main.java.VolatiliaOGL.renderEngine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Camera;
 import main.java.VolatiliaOGL.entities.Entity;
 import main.java.VolatiliaOGL.entities.Light;
 import main.java.VolatiliaOGL.game.Terrain;
-import main.java.VolatiliaOGL.models.TexturedModel;
 import main.java.VolatiliaOGL.shaders.basic.StaticShader;
 import main.java.VolatiliaOGL.shaders.terrain.TerrainShader;
 
@@ -24,14 +20,13 @@ public class MasterRenderer
 	public static final float SKYGREEN = 0.62f;
 	public static final float SKYBLUE = 0.69f;
 
-	private StaticShader shader = new StaticShader();
+	private StaticShader shader = new StaticShader();	
 	private TerrainShader terrainShader = new TerrainShader();
 
 	private EntityRenderer renderer;
 	private TerrainRenderer terainRenderer;
 
-	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
-	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
+	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 
 	public MasterRenderer()
@@ -40,7 +35,7 @@ public class MasterRenderer
 		terainRenderer = new TerrainRenderer(terrainShader);
 	}
 
-	public void render(List<Light> lights, Camera camera, Vector4f clipPlane)
+	public void render(List<Light> lights, Camera camera)
 	{
 		prepare();
 
@@ -56,17 +51,16 @@ public class MasterRenderer
 		terrainShader.stop();
 
 		entities.clear();
-		normalMapEntities.clear();
 		terrains.clear();
 	}
 
-	public void renderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane)
+	public void renderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera)
 	{
 		for(Terrain terrain : terrains)
 			this.processTerrain(terrain);
 		for(Entity entity : entities)
 			this.processEntity(entity);
-		this.render(lights, camera, clipPlane);
+		this.render(lights, camera);
 	}
 
 	public void processTerrain(Terrain terrain)
@@ -76,24 +70,12 @@ public class MasterRenderer
 
 	public void processEntity(Entity entity)
 	{
-		TexturedModel model = entity.getModel();
-		List<Entity> batch = entities.get(model);
-		if(batch != null)
-		{
-			batch.add(entity);
-		}
-		else
-		{
-			List<Entity> newBatch = new ArrayList<Entity>();
-			newBatch.add(entity);
-			entities.put(model, newBatch);
-		}
+		entities.add(entity);
 	}
 
 	public void prepare()
 	{
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		GL11.glClearColor(SKYRED, SKYGREEN, SKYBLUE, 1);
 	}
 

@@ -2,12 +2,8 @@ package main.java.VolatiliaOGL.gui;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import main.java.VolatiliaOGL.screen.Screen;
-
 public class GuiComponent
 {
-	public Screen screen;
-
 	private String name;
 	
 	private int texureID;
@@ -30,9 +26,8 @@ public class GuiComponent
 		return scale;
 	}
 
-	public GuiComponent(Screen s, String name, int texureID, Vector2f position, Vector2f scale)
+	public GuiComponent(String name, int texureID, Vector2f position, Vector2f scale)
 	{
-		this.screen = s;
 		this.name = name;
 		this.texureID = texureID;
 		this.position = position;

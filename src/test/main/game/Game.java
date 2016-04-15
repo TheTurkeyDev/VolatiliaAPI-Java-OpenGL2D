@@ -5,11 +5,13 @@ import java.io.File;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Camera;
 import main.java.VolatiliaOGL.entities.Player;
 import main.java.VolatiliaOGL.game.World;
 import main.java.VolatiliaOGL.gui.GuiComponent;
+import main.java.VolatiliaOGL.gui.ShapeRectangle;
 import main.java.VolatiliaOGL.gui.text.FontType;
 import main.java.VolatiliaOGL.gui.text.GuiText;
 import main.java.VolatiliaOGL.models.TexturedModel;
@@ -36,10 +38,11 @@ public class Game
 		this.screen = screen;
 		this.screen.addText(text);
 		ModelTexture texture = new ModelTexture(Loader.INSTANCE.loadTexture("textures/gui/health"));
-		this.screen.addGuiComponent(new GuiComponent(screen, "test", texture.getID(), new Vector2f(0.5f,0.5f), new Vector2f(.1f,.1f)));
+		this.screen.addGuiComponent(new GuiComponent("test", texture.getID(), new Vector2f(0.5f,0.5f), new Vector2f(.1f,.1f)));
+		this.screen.addShape(new ShapeRectangle(new Vector4f(0.5f, 0.5f, 0.5f, 0.5f), new Vector2f(0.5f,0.5f), new Vector2f(.23f,.23f)));
 
 		TexturedModel test = new TexturedModel(Loader.quad, texture);
-		player = new Player(test, new Vector2f(.1f, .1f), 0, new Vector2f(.1f, .1f));
+		player = new Player(test, new Vector2f(.2f, .2f), 0, new Vector2f(.1f, .1f));
 		camera = new Camera(player);
 
 		world.addEntityToWorld(player);
@@ -52,6 +55,7 @@ public class Game
 
 	public void render()
 	{
+		player.move(world.getTerrainAt(player.getPosition().x, player.getPosition().y));
 		color += 0.005;
 		Color tmpClr = new Color(Color.HSBtoRGB(color, 0.5F, 1f));
 		text.setColor(new Vector3f(tmpClr.getRed() / 255F, tmpClr.getGreen() / 255F, tmpClr.getBlue() / 255F));

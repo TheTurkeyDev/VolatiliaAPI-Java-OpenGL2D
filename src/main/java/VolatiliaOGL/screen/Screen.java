@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import main.java.VolatiliaOGL.gui.GuiComponent;
+import main.java.VolatiliaOGL.gui.ShapeRectangle;
 import main.java.VolatiliaOGL.gui.text.FontType;
 import main.java.VolatiliaOGL.gui.text.GuiText;
 import main.java.VolatiliaOGL.gui.text.TextMeshData;
 import main.java.VolatiliaOGL.renderEngine.FontRenderer;
 import main.java.VolatiliaOGL.renderEngine.GuiRenderer;
+import main.java.VolatiliaOGL.renderEngine.ShapeRenderer;
 import main.java.VolatiliaOGL.util.Loader;
 
 import org.lwjgl.opengl.Display;
@@ -19,11 +21,13 @@ public class Screen
 {
 	protected String name;
 	public int height, width;
-	protected ArrayList<GuiComponent> components = new ArrayList<GuiComponent>();
+	private List<ShapeRectangle> shapes = new ArrayList<ShapeRectangle>();
+	private List<GuiComponent> components = new ArrayList<GuiComponent>();
 	private Map<FontType, List<GuiText>> texts = new HashMap<FontType, List<GuiText>>();
 	
-	private FontRenderer renderer = new FontRenderer();;
-	protected GuiRenderer guiRenderer = new GuiRenderer();
+	private FontRenderer renderer = new FontRenderer();
+	private GuiRenderer guiRenderer = new GuiRenderer();
+	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
 	public Screen(String n)
 	{
@@ -37,6 +41,7 @@ public class Screen
 	 */
 	public void render()
 	{
+		shapeRenderer.render(shapes);
 		guiRenderer.render(components);
 		renderer.render(texts);
 	}
@@ -70,7 +75,7 @@ public class Screen
 	/**
 	 * gets the screen object with the specified name
 	 */
-	public ArrayList<GuiComponent> getGuiComponents()
+	public List<GuiComponent> getGuiComponents()
 	{
 		return components;
 	}
@@ -125,6 +130,17 @@ public class Screen
 		{
 			texts.remove(text.getFont());
 		}
+	}
+	
+	/**
+	 * Adds a screen object to the possible objects for screens to use
+	 * 
+	 * @param ScreenObject
+	 *            to add
+	 */
+	public void addShape(ShapeRectangle shape)
+	{
+		shapes.add(shape);
 	}
 	
 	public void finalCleanUp()

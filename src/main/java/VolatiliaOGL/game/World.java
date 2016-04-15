@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Camera;
 import main.java.VolatiliaOGL.entities.Entity;
@@ -34,7 +33,7 @@ public class World
 	
 	public void renderWorld(Camera camera)
 	{
-		MasterRenderer.INSTANCE.renderScene(entities, terrains, this.getNearestNLights(camera.getPosition(), 4), camera, new Vector4f(0, -1, 0, 100000));
+		MasterRenderer.INSTANCE.renderScene(entities, terrains, this.getNearestNLights(camera.getPosition(), 4), camera);
 	}
 	
 	public void addEntityToWorld(Entity ent)
