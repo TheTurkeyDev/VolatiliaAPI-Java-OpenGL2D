@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Camera;
 import main.java.VolatiliaOGL.entities.Player;
+import main.java.VolatiliaOGL.game.Terrain;
 import main.java.VolatiliaOGL.game.World;
 import main.java.VolatiliaOGL.gui.GuiComponent;
 import main.java.VolatiliaOGL.gui.ShapeRectangle;
@@ -17,6 +18,8 @@ import main.java.VolatiliaOGL.gui.text.GuiText;
 import main.java.VolatiliaOGL.models.TexturedModel;
 import main.java.VolatiliaOGL.screen.Screen;
 import main.java.VolatiliaOGL.textures.ModelTexture;
+import main.java.VolatiliaOGL.textures.TerrainTexture;
+import main.java.VolatiliaOGL.textures.TerrainTexturePack;
 import main.java.VolatiliaOGL.util.Loader;
 
 public class Game
@@ -39,13 +42,18 @@ public class Game
 		this.screen.addText(text);
 		ModelTexture texture = new ModelTexture(Loader.INSTANCE.loadTexture("textures/gui/health"));
 		this.screen.addGuiComponent(new GuiComponent("test", texture.getID(), new Vector2f(0.5f, 0.5f), new Vector2f(.1f, .1f)));
-		this.screen.addShape(new ShapeRectangle(new Vector4f(0.25f, 0.6f, 0.4f, 0f), new Vector2f(0.5f, 0.5f), new Vector2f(0.1f, 0.1f)));
+		this.screen.addShape(new ShapeRectangle(new Vector4f(0.25f, 0.6f, 0.4f, 1f), new Vector2f(0.5f, 0.5f), new Vector2f(0.1f, 0.1f)));
 
 		TexturedModel test = new TexturedModel(Loader.quad, texture);
 		player = new Player(test, new Vector2f(.2f, .2f), 0, new Vector2f(.1f, .1f));
 		camera = new Camera(player);
-
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack("textures/terrain/grassy2", "textures/terrain/mud", "textures/terrain/flowers", "textures/terrain/path");
+		TerrainTexture blendMap = new TerrainTexture(Loader.INSTANCE.loadTexture("textures/terrain/blendMap"));
+		Terrain t = new Terrain(0, 0, texturePack, blendMap);
+		
 		world.addEntityToWorld(player);
+		world.addTerrain(t);
 	}
 
 	public void loadGame()

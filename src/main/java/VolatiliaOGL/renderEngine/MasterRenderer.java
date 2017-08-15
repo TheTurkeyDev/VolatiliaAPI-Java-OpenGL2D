@@ -45,7 +45,6 @@ public class MasterRenderer
 		shader.stop();
 
 		terrainShader.start();
-		terrainShader.loadSkyColor(SKYRED, SKYGREEN, SKYBLUE);
 		terrainShader.loadLights(lights);
 		terainRenderer.render(terrains);
 		terrainShader.stop();

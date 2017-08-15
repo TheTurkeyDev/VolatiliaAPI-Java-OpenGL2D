@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import main.java.VolatiliaOGL.entities.Light;
 import main.java.VolatiliaOGL.shaders.BaseShader;
@@ -22,13 +21,11 @@ public class TerrainShader extends BaseShader
 	private int[] locationLightAttenuation;
 	private int locationShineDampen;
 	private int locationReflectivity;
-	private int locationSkyColor;
 	private int locationBackgroundTexture;
 	private int locationRTexture;
 	private int locationGTexture;
 	private int locationBTexture;
 	private int locationBlendMap;
-	private int locationClipPlane;
 	private int locationDensity;
 	private int locationGradient;
 
@@ -41,8 +38,6 @@ public class TerrainShader extends BaseShader
 	protected void bindAttributes()
 	{
 		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textureCoords");
-		super.bindAttribute(2, "normal ");
 	}
 
 	@Override
@@ -51,13 +46,11 @@ public class TerrainShader extends BaseShader
 		this.locationTransformationMatrix = super.getUniformLocation("transformationMatrix");
 		this.locationShineDampen = super.getUniformLocation("shineDamper");
 		this.locationReflectivity = super.getUniformLocation("reflectivity");
-		this.locationSkyColor = super.getUniformLocation("skyColor");
 		this.locationBackgroundTexture = super.getUniformLocation("backgroundTexture");
 		this.locationRTexture = super.getUniformLocation("rTexture");
 		this.locationGTexture = super.getUniformLocation("gTexture");
 		this.locationBTexture = super.getUniformLocation("bTexture");
 		this.locationBlendMap = super.getUniformLocation("blendMap");
-		this.locationClipPlane = super.getUniformLocation("plane");
 		this.locationDensity = super.getUniformLocation("density");
 		this.locationGradient = super.getUniformLocation("gradient");
 
@@ -101,12 +94,6 @@ public class TerrainShader extends BaseShader
 		super.loadFloat(this.locationShineDampen, dampen);
 		super.loadFloat(this.locationReflectivity, reflectivity);
 	}
-
-	public void loadSkyColor(float r, float g, float b)
-	{
-		super.loadVector(this.locationSkyColor, new Vector3f(r, g, b));
-	}
-
 	public void connectTextureUnits()
 	{
 		super.loadInt(this.locationBackgroundTexture, 0);
@@ -114,11 +101,6 @@ public class TerrainShader extends BaseShader
 		super.loadInt(this.locationGTexture, 2);
 		super.loadInt(this.locationBTexture, 3);
 		super.loadInt(this.locationBlendMap, 4);
-	}
-
-	public void loadClipedPlane(Vector4f plane)
-	{
-		super.loadVector(this.locationClipPlane, plane);
 	}
 
 	public void loadFogData(float density, float gradient)

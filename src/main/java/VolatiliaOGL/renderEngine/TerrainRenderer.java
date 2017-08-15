@@ -14,15 +14,19 @@ import main.java.VolatiliaOGL.game.World;
 import main.java.VolatiliaOGL.models.RawModel;
 import main.java.VolatiliaOGL.shaders.terrain.TerrainShader;
 import main.java.VolatiliaOGL.textures.TerrainTexturePack;
+import main.java.VolatiliaOGL.util.Loader;
 import main.java.VolatiliaOGL.util.MathUtil;
 
 public class TerrainRenderer
 {
+	private final RawModel quad;
 	private TerrainShader shader;
 
 	public TerrainRenderer(TerrainShader shader)
 	{
 		this.shader = shader;
+		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
+		quad = Loader.INSTANCE.loadToVAO(positions, 2);
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadFogData(World.fogDensity, World.fogGradient);
@@ -35,18 +39,15 @@ public class TerrainRenderer
 		{
 			this.prepareTerrain(terrain);
 			this.loadModelMatrix(terrain);
-			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 			this.unbindTexturedModel();
 		}
 	}
 
 	private void prepareTerrain(Terrain terrain)
 	{
-		RawModel rmodel = terrain.getModel();
-		GL30.glBindVertexArray(rmodel.getVaoID());
+		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
 		this.bindTextures(terrain);
 		shader.loadShineVariables(1, 0);
 	}
@@ -69,8 +70,6 @@ public class TerrainRenderer
 	private void unbindTexturedModel()
 	{
 		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
 	}
 
